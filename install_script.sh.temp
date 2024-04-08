@@ -1,0 +1,23 @@
+# boring stuff
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt ln -sf /usr/share/zoneinfo/<Region>/<City> /etc/localtime
+arch-chroot /mnt hwclock --systohc
+arch-chroot /mnt sed -i 's/#\(en_US.UTF-8 UTF-8\)/\1/' /etc/locale.gen
+arch-chroot /mnt locale-gen
+echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
+echo "<hostname>" > /mnt/etc/hostname
+
+# Advise user to regenerate initramfs when using LVM, encryption, or RAID as stated in the arch installation guide
+
+# Create User
+# prompt for a username
+arch-chroot /mnt useradd -m -G wheel,video -s /bin/bash <username>
+arch-chroot /mnt passwd <username> 
+
+# Prompt for root password
+arch-chroot /mnt passwd
+
+# Install the bootloader
+arch-chroot /mnt bootctl install
+echo -e "default shyos.conf\ntimeout 15\neditor no" > /mnt/boot/loader/loader.conf
+echo -e "title ShyOS\nlinux /vmlinuz-linux\ninitrd /<cpu>-ucode.img\ninitrd /initramfs-linux.img"

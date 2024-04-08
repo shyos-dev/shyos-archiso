@@ -1,0 +1,5 @@
+- Partition the drive (this has been done by the user)
+- Install all packages with pacstrap to the root drive from the list contained at pkglist_root_install.txt
+- Generate fstab and change ext4 mount options to "defaults,noatime,commit=60"
+- Configure the system within chroot 
+- Install the bootloader (with at least 256MB EFI partition size)
